@@ -206,7 +206,7 @@
             "command": "pyinstaller",
             "args": [
                 "--onefile",
-                "--windowed",
+                "--console",
                 "--name=GPLTT",
                 "--distpath=dist",
                 "--workpath=build_temp",
@@ -232,8 +232,35 @@
             "type": "shell",
             "command": "pyinstaller",
             "args": [
-                "--windowed",
+                "--console",
                 "--name=GPLTT",
+                "--distpath=dist",
+                "--workpath=build_temp",
+                "--clean",
+                "--noconfirm",
+                "GPLTT.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "🐍 安装Python依赖"
+        },
+        {
+            "label": "📦 打包GPLTT (无控制台版)",
+            "type": "shell",
+            "command": "pyinstaller",
+            "args": [
+                "--onefile",
+                "--windowed",
+                "--name=GPLTT-NoConsole",
                 "--distpath=dist",
                 "--workpath=build_temp",
                 "--clean",
