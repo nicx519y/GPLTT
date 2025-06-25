@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Pico Debug (需要调试器)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "executable": "./build/GPLTT_fw.ino.elf",
+            "servertype": "openocd",
+            "configFiles": [
+                "interface/picoprobe.cfg",
+                "target/rp2040.cfg"
+            ],
+            "svdFile": "${env:PICO_SDK_PATH}/src/rp2040/hardware_regs/rp2040.svd",
+            "runToMain": true,
+            "postRestartCommands": [
+                "break setup",
+                "break loop",
+                "continue"
+            ]
+        }
+    ]
+} 

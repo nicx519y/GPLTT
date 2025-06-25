@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Arduino Pico",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "ARDUINO=10819",
+                "ARDUINO_RASPBERRY_PI_PICO",
+                "ARDUINO_ARCH_RP2040",
+                "PICO_BOARD=\"pico\"",
+                "F_CPU=133000000L",
+                "__cplusplus=201103L",
+                "LED_BUILTIN=25",
+                "INPUT_PULLUP=0x2",
+                "OUTPUT=0x1",
+                "HIGH=0x1",
+                "LOW=0x0"
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

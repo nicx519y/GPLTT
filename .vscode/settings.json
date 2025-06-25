@@ -1,0 +1,29 @@
+{
+    "files.associations": {
+        "*.ino": "cpp",
+        "*.h": "c",
+        "*.c": "c",
+        "*.cpp": "cpp"
+    },
+    "C_Cpp.default.intelliSenseMode": "gcc-arm",
+    "C_Cpp.default.compilerPath": "%USERPROFILE%/.arduino15/packages/rp2040/tools/pqt-gcc/*/bin/arm-none-eabi-gcc.exe",
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.default.cppStandard": "c++17",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "terminal.integrated.shell.windows": "pwsh.exe",
+    "files.exclude": {
+        "**/build": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "search.exclude": {
+        "**/build": true
+    },
+    "git.ignoreLimitWarning": true
+}

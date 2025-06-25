@@ -1,0 +1,336 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🔨 编译Pico固件",
+            "type": "shell",
+            "command": ".\\tools\\arduino-cli.exe",
+            "args": [
+                "--config-file",
+                "arduino-cli.yaml",
+                "compile",
+                "--fqbn",
+                "rp2040:rp2040:rpipico",
+                "--output-dir",
+                "./build",
+                "--verbose",
+                "gpltt-v1.01.ino"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [
+                {
+                    "owner": "arduino",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "ARDUINO_CLI_NO_AUTO_INSTALL": "true",
+                    "ARDUINO_CLI_SKIP_UPDATES": "true",
+                    "NO_PROXY": "*"
+                }
+            }
+        },
+        {
+            "label": "🔨 快速编译(离线)",
+            "type": "shell",
+            "command": ".\\tools\\arduino-cli.exe",
+            "args": [
+                "--config-file",
+                "arduino-cli.yaml",
+                "compile",
+                "--fqbn",
+                "rp2040:rp2040:rpipico",
+                "--build-path",
+                "./build",
+                "gpltt-v1.01.ino"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": [
+                {
+                    "owner": "arduino",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "ARDUINO_CLI_NO_AUTO_INSTALL": "true",
+                    "ARDUINO_CLI_SKIP_UPDATES": "true",
+                    "HTTP_PROXY": "",
+                    "HTTPS_PROXY": "",
+                    "NO_PROXY": "*"
+                }
+            }
+        },
+        {
+            "label": "📤 上传到Pico",
+            "type": "shell",
+            "command": ".\\tools\\arduino-cli.exe",
+            "args": [
+                "--config-file",
+                "arduino-cli.yaml",
+                "upload",
+                "--fqbn",
+                "rp2040:rp2040:rpipico",
+                "--port",
+                "${input:serialPort}",
+                "--verbose",
+                "--input-dir",
+                "./build",
+                "."
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "🔗 编译并上传",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "🔨 编译Pico固件",
+                "📤 上传到Pico"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "📋 列出可用串口",
+            "type": "shell",
+            "command": ".\\tools\\arduino-cli.exe",
+            "args": [
+                "--config-file",
+                "arduino-cli.yaml",
+                "board",
+                "list"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🧹 清理构建文件",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "if exist build rmdir /s /q build && if exist build_temp rmdir /s /q build_temp"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🐍 安装Python依赖",
+            "type": "shell",
+            "command": "pip",
+            "args": [
+                "install",
+                "pyinstaller",
+                "pygame",
+                "pyserial",
+                "keyboard",
+                "mouse"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "📦 打包GPLTT (单文件)",
+            "type": "shell",
+            "command": "pyinstaller",
+            "args": [
+                "--onefile",
+                "--windowed",
+                "--name=GPLTT",
+                "--distpath=dist",
+                "--workpath=build_temp",
+                "--clean",
+                "--noconfirm",
+                "GPLTT.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "🐍 安装Python依赖"
+        },
+        {
+            "label": "📦 打包GPLTT (目录版)",
+            "type": "shell",
+            "command": "pyinstaller",
+            "args": [
+                "--windowed",
+                "--name=GPLTT",
+                "--distpath=dist",
+                "--workpath=build_temp",
+                "--clean",
+                "--noconfirm",
+                "GPLTT.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "🐍 安装Python依赖"
+        },
+        {
+            "label": "📦 打包GPLTT (调试版)",
+            "type": "shell",
+            "command": "pyinstaller",
+            "args": [
+                "--onefile",
+                "--console",
+                "--name=GPLTT-Debug",
+                "--distpath=dist",
+                "--workpath=build_temp",
+                "--clean",
+                "--noconfirm",
+                "GPLTT.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "🐍 安装Python依赖"
+        },
+        {
+            "label": "🚀 运行GPLTT (Python)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "GPLTT.py"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "🧹 清理Python构建文件",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "if exist dist rmdir /s /q dist && if exist build_temp rmdir /s /q build_temp && if exist __pycache__ rmdir /s /q __pycache__ && if exist GPLTT.spec del GPLTT.spec"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🔗 完整构建 (固件+应用)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "🔨 编译Pico固件",
+                "📦 打包GPLTT (单文件)"
+            ],
+            "group": "build"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "serialPort",
+            "description": "选择串口 (例如: COM3, COM4)",
+            "default": "COM3",
+            "type": "promptString"
+        }
+    ]
+}

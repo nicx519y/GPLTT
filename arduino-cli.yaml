@@ -1,0 +1,35 @@
+directories:
+  data: .\.arduino15
+  downloads: .\.arduino15\staging
+  user: .
+
+board_manager:
+  additional_urls:
+    - https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+
+library:
+  enable_unsafe_install: false
+
+logging:
+  level: info
+  format: text
+
+daemon:
+  port: "50051"
+
+sketch:
+  always_export_binaries: false
+
+updater:
+  enable_notification: false
+
+network:
+  proxy: ""
+  
+# 禁用自动更新索引
+metrics:
+  enabled: false
+
+# 离线模式相关设置
+connectivity_check:
+  enabled: false
